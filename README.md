@@ -1,4 +1,4 @@
-# graydct
+# GrayDCT2
 
 ##### *2025, Metodi del Calcolo Scientifico, Riccardo Chimisso 866009 & Mauro Zorzin 866001*
 
