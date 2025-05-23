@@ -21,6 +21,8 @@ pylint:
     - R0903 # Classes are allowed to have less than 2 public methods.
     - R0917 # Don't really care about distinction from arguments and named arguments in the count of total arguments.
     - C0103 # Matrices variable names can be uppercase.
+    - C0413 # Wrong import position.
+    - W0718 # Catching general exceptions.
 
 pycodestyle:
   disable:
@@ -36,6 +38,7 @@ pycodestyle:
     - E306 # Don't like it.
     - N803 # Matrices variable names can be uppercase.
     - N806 # Matrices variable names can be uppercase.
+    - E402 # Module level import not at top of file.
 
 mccabe:
   options:

@@ -10,7 +10,13 @@ matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
-def to_disp(data: np.typing.NDArray[Any]) -> np.typing.NDArray[Any]:
+def crop(img: np.typing.NDArray[Any], F: int) -> tuple[np.typing.NDArray[Any], int, int]:
+  h, w = img.shape
+  height, width = h - h % F, w - w % F
+  cropped = img[:height, :width]
+  return cropped, height, width
+
+def to_visual(data: np.typing.NDArray[Any]) -> np.typing.NDArray[Any]:
   """
   Converts a data matrix into gray-scale for visualization.
 
@@ -40,21 +46,19 @@ def dct_pipeline_steps(img: np.typing.NDArray[Any], F: int, d_thr: int) -> tuple
   if img.ndim != 2:
     raise ValueError("Image must be gray-scale!")
 
-  h, w = img.shape
-  h2, w2 = h - h % F, w - w % F
-  orig_crop = img[:h2, :w2]
+  cropped, height, width = crop(img, F)
 
   # Mask for k+ℓ < d_thr
   k_idx, l_idx = np.meshgrid(np.arange(F), np.arange(F), indexing="ij")
   block_mask = (k_idx + l_idx) < d_thr
 
-  coeff_mag = np.zeros_like(orig_crop, dtype=float)
-  coeff_masked_mag = np.zeros_like(orig_crop, dtype=float)
-  idct_float = np.empty_like(orig_crop, dtype=float)
+  coeff_mag = np.zeros_like(cropped, dtype=float)
+  coeff_masked_mag = np.zeros_like(cropped, dtype=float)
+  idct_float = np.empty_like(cropped, dtype=float)
 
-  for y in range(0, h2, F):
-    for x in range(0, w2, F):
-      patch = orig_crop[y : y + F, x : x + F].astype(float)
+  for y in range(0, height, F):
+    for x in range(0, width, F):
+      patch = cropped[y : y + F, x : x + F].astype(float)
       # DCT
       c: np.typing.NDArray[Any] = dctn(patch, type=2, norm="ortho") # type: ignore
       coeff_mag[y : y + F, x : x + F] = np.abs(c)
@@ -67,11 +71,11 @@ def dct_pipeline_steps(img: np.typing.NDArray[Any], F: int, d_thr: int) -> tuple
 
   images: list[np.typing.NDArray[Any] | tuple[np.typing.NDArray[Any], np.typing.NDArray[Any]]] = [
     img,
-    orig_crop,
-    to_disp(coeff_mag),
-    to_disp(coeff_masked_mag),
+    cropped,
+    to_visual(coeff_mag),
+    to_visual(coeff_masked_mag),
     idct_float,
-    (orig_crop, idct_float)
+    (cropped, idct_float)
   ]
 
   titles = [
