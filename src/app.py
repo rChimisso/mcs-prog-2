@@ -58,16 +58,16 @@ def dct_pipeline_steps(img: np.typing.NDArray[Any], F: int, d_thr: int) -> tuple
 
   for y in range(0, height, F):
     for x in range(0, width, F):
-      patch = cropped[y : y + F, x : x + F].astype(float)
+      patch = cropped[y : y + F, x : x + F].astype(float) # noqa: E203 - False positive, see https://github.com/PyCQA/pycodestyle/issues/373
       # DCT
       c: np.typing.NDArray[Any] = dctn(patch, type=2, norm="ortho") # type: ignore
-      coeff_mag[y : y + F, x : x + F] = np.abs(c)
+      coeff_mag[y : y + F, x : x + F] = np.abs(c) # noqa: E203 - False positive, see https://github.com/PyCQA/pycodestyle/issues/373
       # Mask
       c_mask = c * block_mask
-      coeff_masked_mag[y : y + F, x : x + F] = np.abs(c_mask)
+      coeff_masked_mag[y : y + F, x : x + F] = np.abs(c_mask) # noqa: E203 - False positive, see https://github.com/PyCQA/pycodestyle/issues/373
       # IDCT
       rec_patch: np.typing.NDArray[Any] = idctn(c_mask, type=2, norm="ortho") # type: ignore
-      idct_float[y : y + F, x : x + F] = np.clip(np.round(rec_patch), 0, 255).astype(np.uint8)
+      idct_float[y : y + F, x : x + F] = np.clip(np.round(rec_patch), 0, 255).astype(np.uint8) # noqa: E203 - False positive, see https://github.com/PyCQA/pycodestyle/issues/373
 
   images: list[np.typing.NDArray[Any] | tuple[np.typing.NDArray[Any], np.typing.NDArray[Any]]] = [
     img,
