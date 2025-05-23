@@ -20,7 +20,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          sparse-checkout: src/main.py
+          sparse-checkout: src/engine.py
           sparse-checkout-cone-mode: false
       - name: Validate version format
         if: github.event.inputs.disable_checks == 'false'
