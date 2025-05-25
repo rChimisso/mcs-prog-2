@@ -1,4 +1,4 @@
-MatIter documentation
+GrayDCT2 documentation
 ======================
 
 Description

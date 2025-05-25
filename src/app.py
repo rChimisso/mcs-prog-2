@@ -11,10 +11,20 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 def crop(img: np.typing.NDArray[Any], F: int) -> tuple[np.typing.NDArray[Any], int, int]:
+  """
+  Crops an image to be perfectly divisible in blocks of side length F.
+
+  :param img: Image to crop.
+  :type img: np.typing.NDArray[Any]
+  :param F: Block side length.
+  :type F: int
+  :return: Cropped image along with its new width and height.
+  :rtype: tuple[np.typing.NDArray[Any], int, int]
+  """
   h, w = img.shape
   height, width = h - h % F, w - w % F
   cropped = img[:height, :width]
-  return cropped, height, width
+  return cropped, width, height
 
 def to_visual(data: np.typing.NDArray[Any]) -> np.typing.NDArray[Any]:
   """
@@ -29,7 +39,7 @@ def to_visual(data: np.typing.NDArray[Any]) -> np.typing.NDArray[Any]:
   disp *= 255 / disp.max() if disp.max() > 0 else 1
   return disp.astype(np.uint8)
 
-def dct_pipeline_steps(img: np.typing.NDArray[Any], F: int, d_thr: int) -> tuple[list[np.typing.NDArray[Any] | tuple[np.typing.NDArray[Any], np.typing.NDArray[Any]]], list[str]]:
+def jpeg_pipeline_steps(img: np.typing.NDArray[Any], F: int, d_thr: int) -> tuple[list[np.typing.NDArray[Any] | tuple[np.typing.NDArray[Any], np.typing.NDArray[Any]]], list[str]]:
   """
   Builds the JPEG compression steps.
 
@@ -46,7 +56,7 @@ def dct_pipeline_steps(img: np.typing.NDArray[Any], F: int, d_thr: int) -> tuple
   if img.ndim != 2:
     raise ValueError("Image must be gray-scale!")
 
-  cropped, height, width = crop(img, F)
+  cropped, width, height = crop(img, F)
 
   # Mask for k+ℓ < d_thr
   k_idx, l_idx = np.meshgrid(np.arange(F), np.arange(F), indexing="ij")
@@ -99,7 +109,7 @@ class DCT2App(tk.Tk):
     self.title("JPEG-like compression step-by-step")
     self.geometry("1080x720")
     self.minsize(720, 480)
-    self.protocol("WM_DELETE_WINDOW", self.on_close)
+    self.protocol("WM_DELETE_WINDOW", self._on_close)
     # Initialize data stuff.
     self.image_path: Path | None = None
     self.img_orig: np.typing.NDArray[Any] | None = None
@@ -109,7 +119,67 @@ class DCT2App(tk.Tk):
     # Build widgets.
     self._build_widgets()
 
+  def load_image(self) -> None:
+    """
+    Loads an image selected by the user.
+    """
+    filename = filedialog.askopenfilename(
+      title="Select an image (BMP/PNG/JPG)",
+      filetypes=[("Images", "*.bmp;*.png;*.jpg;*.jpeg"), ("All files", "*.*")],
+    )
+    if filename:
+      self.image_path = Path(filename)
+      img = Image.open(filename).convert("L")
+      self.img_orig = np.array(img)
+      self._reset_steps([self.img_orig], ["Original image"])
+
+  def compress_and_show(self) -> None:
+    """
+    Applies the JPEG-like compression pipeline to the selected image with the chosen parameters.
+    """
+    if self.img_orig is None:
+      messagebox.showwarning("No image", "You must first load an image.")
+      return
+
+    F = self.var_block.get()
+    dthr = self.var_d.get()
+    if F < 2:
+      messagebox.showerror("Block not valid", "F must be ≥ 2.")
+      return
+    if dthr < 1:
+      messagebox.showerror("Parameter d not valid", "d must ≥ 1.")
+      return
+
+    try:
+      imgs, titles = jpeg_pipeline_steps(self.img_orig, F, dthr)
+    except Exception as exc:
+      messagebox.showerror("Compression error", str(exc))
+      return
+
+    self._reset_steps(imgs, titles)
+
+  def prev_step(self) -> None:
+    """
+    Goes to the previous step in the pipeline.
+    """
+    if self.step_idx > 0:
+      self.step_idx -= 1
+      self._update_nav_buttons()
+      self._show_current_step()
+
+  def next_step(self) -> None:
+    """
+    Goes to the next step in the pipeline.
+    """
+    if self.step_idx < len(self.step_imgs) - 1:
+      self.step_idx += 1
+      self._update_nav_buttons()
+      self._show_current_step()
+
   def _build_widgets(self) -> None:
+    """
+    Builds the application widgets.
+    """
     ctrl = ttk.Frame(self)
     ctrl.pack(side=tk.TOP, fill=tk.X, padx=5, pady=5)
 
@@ -138,59 +208,25 @@ class DCT2App(tk.Tk):
     self.canvas = FigureCanvasTkAgg(self.fig, master=self)
     self.canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
 
-  def load_image(self) -> None:
-    filename = filedialog.askopenfilename(
-      title="Select an image (BMP/PNG/JPG)",
-      filetypes=[("Images", "*.bmp;*.png;*.jpg;*.jpeg"), ("All files", "*.*")],
-    )
-    if filename:
-      self.image_path = Path(filename)
-      img = Image.open(filename).convert("L")
-      self.img_orig = np.array(img)
-      self._reset_steps([self.img_orig], ["Original image"])
-
-  def compress_and_show(self) -> None:
-    if self.img_orig is None:
-      messagebox.showwarning("No image", "You must first load an image.")
-      return
-
-    F = self.var_block.get()
-    dthr = self.var_d.get()
-    if F < 2:
-      messagebox.showerror("Block not valid", "F must be ≥ 2.")
-      return
-    if dthr < 1:
-      messagebox.showerror("Parameter d not valid", "d must ≥ 1.")
-      return
-
-    try:
-      imgs, titles = dct_pipeline_steps(self.img_orig, F, dthr)
-    except Exception as exc:
-      messagebox.showerror("Compression error", str(exc))
-      return
-
-    self._reset_steps(imgs, titles)
-
   def _reset_steps(self, imgs: list[np.typing.NDArray[Any] | tuple[np.typing.NDArray[Any], np.typing.NDArray[Any]]], titles: list[str]) -> None:
+    """
+    Resets the pipeline steps.
+
+    :param imgs: Images to display for each step.
+    :type imgs: list[np.typing.NDArray[Any]  |  tuple[np.typing.NDArray[Any], np.typing.NDArray[Any]]]
+    :param titles: Titles for each step.
+    :type titles: list[str]
+    """
     self.step_imgs = imgs
     self.step_titles = titles
     self.step_idx = 0
     self._update_nav_buttons()
     self._show_current_step()
 
-  def prev_step(self) -> None:
-    if self.step_idx > 0:
-      self.step_idx -= 1
-      self._update_nav_buttons()
-      self._show_current_step()
-
-  def next_step(self) -> None:
-    if self.step_idx < len(self.step_imgs) - 1:
-      self.step_idx += 1
-      self._update_nav_buttons()
-      self._show_current_step()
-
   def _show_current_step(self) -> None:
+    """
+    Displays the current step image(s).
+    """
     self.fig.clf()
     img_obj = self.step_imgs[self.step_idx]
     title = self.step_titles[self.step_idx]
@@ -215,6 +251,9 @@ class DCT2App(tk.Tk):
     self.step_label.config(text=f"Step {self.step_idx} / {len(self.step_imgs) - 1}")
 
   def _update_nav_buttons(self) -> None:
+    """
+    Updates the state of the navigation buttons.
+    """
     if not self.step_imgs:
       self.prev_btn.config(state=tk.DISABLED)
       self.next_btn.config(state=tk.DISABLED)
@@ -222,7 +261,7 @@ class DCT2App(tk.Tk):
     self.prev_btn.config(state=tk.NORMAL if self.step_idx > 0 else tk.DISABLED)
     self.next_btn.config(state=tk.NORMAL if self.step_idx < len(self.step_imgs) - 1 else tk.DISABLED)
 
-  def on_close(self) -> None:
+  def _on_close(self) -> None:
     """
     Performs closing operations to quit the application properly.
     """
