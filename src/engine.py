@@ -20,9 +20,9 @@ class Command(StrEnum):
   """
   Compares a naive implementation of the DCT2 to SciPy's implementation.
   """
-  BMP = "bmp"
+  CMP = "cmp"
   """
-  Launches the application window to select and compress a .bmp image with JPEG compression type.
+  Launches the application window to select and compress a gray-scale image with JPEG compression type.
   """
   EXIT = "exit"
   """
@@ -52,8 +52,8 @@ class Engine:
           self.help(arguments)
         case [Command.DCT, *arguments]:
           self.dct(arguments)
-        case [Command.BMP]:
-          self.bmp()
+        case [Command.CMP]:
+          self.cmp()
         case [Command.EXIT]:
           break
         case _:
@@ -91,10 +91,10 @@ class Engine:
             print(f"  {Command.DCT} [n]")
             print()
             print("  Compares a naive implementation of the DCT2 to SciPy's implementation. The comparison runs for N×N arrays with N starting from 2³ and doubling up to 2ⁿ (n defaults to 12).")
-          case Command.BMP:
-            print(f"  {Command.BMP}")
+          case Command.CMP:
+            print(f"  {Command.CMP}")
             print()
-            print("  Launches the application window to select and compress a .bmp image with JPEG compression type.")
+            print("  Launches the application window to select and compress a gray-scale image with JPEG compression type.")
           case Command.EXIT:
             print(f"  {Command.EXIT}")
             print("")
@@ -122,9 +122,9 @@ class Engine:
     else:
       self.error(f"Too many arguments for command '{Command.HELP}'")
 
-  def bmp(self) -> None:
+  def cmp(self) -> None:
     """
-    Handles the 'bmp' command.
+    Handles the 'cmp' command.
     """
     DCT2App().mainloop()
 

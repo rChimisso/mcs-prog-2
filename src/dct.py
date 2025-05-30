@@ -44,7 +44,7 @@ def dct2_scipy(data: np.typing.NDArray[Any]) -> np.typing.NDArray[Any]:
   :return: Data with DCT2 applied.
   :rtype: np.typing.NDArray[Any]
   """
-  return dctn(data, type=2, norm="ortho") # type: ignore
+  return dctn(data, norm="ortho") # type: ignore
 
 def benchmark(sizes: list[int] = [2**i for i in range(3, 13)]) -> pd.DataFrame:
   """
@@ -59,8 +59,8 @@ def benchmark(sizes: list[int] = [2**i for i in range(3, 13)]) -> pd.DataFrame:
   rows: list[dict[str, float]] = []
   for N in tqdm(sizes, bar_format='{l_bar}{bar}| {n_fmt}/{total_fmt}', ncols=80):
     x = rng.integers(0, 256, size=(N, N)).astype(float)
-    t_naive = min(repeat(lambda x=x: dct2_naive(x), repeat=3, number=5))
-    t_fast = min(repeat(lambda x=x: dct2_scipy(x), repeat=3, number=5))
+    t_naive = min(repeat(lambda x=x: dct2_naive(x), repeat=5, number=1))
+    t_fast = min(repeat(lambda x=x: dct2_scipy(x), repeat=5, number=1))
     rows.append({"N": N, "naive": t_naive, "fast": t_fast})
   return pd.DataFrame(rows).set_index("N")
 

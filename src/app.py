@@ -35,7 +35,7 @@ def to_visual(data: np.typing.NDArray[Any]) -> np.typing.NDArray[Any]:
   :return: Gray-scale data matrix.
   :rtype: np.typing.NDArray[Any]
   """
-  disp = np.log10(1 + data)
+  disp = np.log10(1 + np.abs(data)) # Apply absolute to avoid negatives and + 1 to avoid 0s and make original 0s become 0s when scaled (as log(1) is 0).
   disp *= 255 / disp.max() if disp.max() > 0 else 1
   return disp.astype(np.uint8)
 
@@ -70,13 +70,13 @@ def jpeg_pipeline_steps(img: np.typing.NDArray[Any], F: int, d_thr: int) -> tupl
     for x in range(0, width, F):
       patch = cropped[y : y + F, x : x + F].astype(float) # noqa: E203 - False positive, see https://github.com/PyCQA/pycodestyle/issues/373
       # DCT
-      c: np.typing.NDArray[Any] = dctn(patch, type=2, norm="ortho") # type: ignore
-      coeff_mag[y : y + F, x : x + F] = np.abs(c) # noqa: E203 - False positive, see https://github.com/PyCQA/pycodestyle/issues/373
+      c: np.typing.NDArray[Any] = dctn(patch, norm="ortho") # type: ignore
+      coeff_mag[y : y + F, x : x + F] = c # noqa: E203 - False positive, see https://github.com/PyCQA/pycodestyle/issues/373
       # Mask
       c_mask = c * block_mask
-      coeff_masked_mag[y : y + F, x : x + F] = np.abs(c_mask) # noqa: E203 - False positive, see https://github.com/PyCQA/pycodestyle/issues/373
+      coeff_masked_mag[y : y + F, x : x + F] = c_mask # noqa: E203 - False positive, see https://github.com/PyCQA/pycodestyle/issues/373
       # IDCT
-      rec_patch: np.typing.NDArray[Any] = idctn(c_mask, type=2, norm="ortho") # type: ignore
+      rec_patch: np.typing.NDArray[Any] = idctn(c_mask, norm="ortho") # type: ignore
       idct_float[y : y + F, x : x + F] = np.clip(np.round(rec_patch), 0, 255).astype(np.uint8) # noqa: E203 - False positive, see https://github.com/PyCQA/pycodestyle/issues/373
 
   images: list[np.typing.NDArray[Any] | tuple[np.typing.NDArray[Any], np.typing.NDArray[Any]]] = [
@@ -101,7 +101,7 @@ def jpeg_pipeline_steps(img: np.typing.NDArray[Any], F: int, d_thr: int) -> tupl
 
 class DCT2App(tk.Tk):
   """
-  Application for compressing .bmp (gray-scale) images with a JPEG-like compression.
+  Application for compressing gray-scale images with a JPEG-like compression.
   """
   def __init__(self) -> None:
     super().__init__()
@@ -123,10 +123,7 @@ class DCT2App(tk.Tk):
     """
     Loads an image selected by the user.
     """
-    filename = filedialog.askopenfilename(
-      title="Select an image (BMP/PNG/JPG)",
-      filetypes=[("Images", "*.bmp;*.png;*.jpg;*.jpeg"), ("All files", "*.*")],
-    )
+    filename = filedialog.askopenfilename(title="Select an image (BMP/PNG/JPG)", filetypes=[("Images", "*.bmp;*.png;*.jpg;*.jpeg"), ("All files", "*.*")])
     if filename:
       self.image_path = Path(filename)
       img = Image.open(filename).convert("L")
