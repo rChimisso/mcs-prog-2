@@ -20,6 +20,13 @@
     7. [CI](#ci)
 2. [Confronto DCT2 e FastDCT2](#confronto-dct2-e-fastdct2)
 3. [Esperimenti](#esperimenti)
+    1. [$F=8; d=10$](#compressione-con)
+    2. [$F=32; d=10$](#compressione-con-1)
+    3. [$F=32; d=40$](#compressione-con-2)
+    4. [Compressioni successive](#compressioni-successive)
+    5. [Immagini fortunate](#immagini-fortunate)
+    6. [Effetto pixelatura](#effetto-pixelatura)
+    7. [Effetto pixelatura con $F$ piccolo](#effetto-pixelatura-con--piccolo)
 4. [Sviluppi futuri](#sviluppi-futuri)
 
 ## Struttura
@@ -271,15 +278,235 @@ I workflow di cui ai punti 2, 3 e 6 sono eseguibili anche in modo indipendente.
 
 ## Confronto DCT2 e FastDCT2
 
-TODO  
-Nella relazione includete anche un breve resoconto preliminare su questa parte.
+Il confronto tra DCT2 *naive* e DCT2 *fast* è stato fatto per matrici $N \times N$ con $N$ che parte da $2^3$ e raddoppia fino a $2^n$, con $n=15$.  
+Il confronto si ferma a $2^15$ per problemi di spazio. La tabella sottostante riporta infatti il consumo teorico solo per la tabella $N \times N$ da inizializzare:
+
+|   $n$ | Lato $N = 2^n$ | Valori $V = 2^{2n}$ |      `float64` MB |      `float64` GB |
+| ----: | -------------: | ------------------: | ----------------: | ----------------: |
+|   $3$ |            $8$ |                $64$ | $\frac{1}{2,048}$ |              $≈0$ |
+|   $4$ |           $16$ |               $256$ |   $\frac{1}{512}$ |              $≈0$ |
+|   $5$ |           $32$ |             $1,024$ |   $\frac{1}{128}$ |              $≈0$ |
+|   $6$ |           $64$ |             $4,096$ |    $\frac{1}{32}$ |              $≈0$ |
+|   $7$ |          $128$ |            $16,384$ |     $\frac{1}{8}$ | $\frac{1}{8,192}$ |
+|   $8$ |          $256$ |            $65,536$ |     $\frac{1}{2}$ | $\frac{1}{2,048}$ |
+|   $9$ |          $512$ |           $262,114$ |               $2$ |   $\frac{1}{512}$ |
+|  $10$ |        $1,024$ |         $1,048,576$ |               $8$ |   $\frac{1}{128}$ |
+|  $11$ |        $2,048$ |         $4,194,304$ |              $32$ |    $\frac{1}{32}$ |
+|  $12$ |        $4,096$ |        $16,777,216$ |             $128$ |     $\frac{1}{8}$ |
+|  $13$ |        $8,192$ |        $67,108,864$ |             $512$ |     $\frac{1}{2}$ |
+|  $14$ |       $16,384$ |       $268,435,456$ |           $2,048$ |               $2$ |
+|  $15$ |       $32,768$ |     $1,073,741,824$ |           $8,192$ |               $8$ |
+|  $16$ |       $65,536$ |     $4,294,967,296$ |          $32,768$ |              $32$ |
+|  $17$ |      $131,072$ |    $17,179,869,184$ |         $131,072$ |             $128$ |
+
+$\frac{\left ( 2^n \right )^2 \cdot 64}{8 \cdot 2^S} = \frac{2^{2n} \cdot 8}{2^S} = 2^{2n+3-S}$ dove $S$ è la dimensione dell'unità di misura ($20$ per MB e $30$ per GB).
+
+Oltre alla tabella di dati, però, sono necessarie matrici ausiliarie di dimensioni analoghe per il calcolo della DCT, aumentando quindi l'effettiva memoria occupata.  
+Motivo per cui, con $n=15$ vediamo in memoria un picco di utilizzo a $≈32$ GB. Poiché il computer su cui il programma gira ha $64$ GB di RAM, sarebbe stato improponibile effettuare confronti per qualsiasi $n \ge 16$.
+
+I risultati del benchmark sono i seguenti:
+
+![benchmark](./assets/benchmark.png)
+
+|        N |      *naive* |               $N^3$ |      *fast* | $N^2 \cdot \log_2 N$ |
+| -------: | -----------: | ------------------: | ----------: | -------------------: |
+|      $8$ |   $0.000039$ | $8.1\mathrm{e}{-9}$ |  $0.000009$ |  $3.2\mathrm{e}{-7}$ |
+|     $16$ |   $0.000014$ | $6.5\mathrm{e}{-8}$ |  $0.000008$ |  $1.7\mathrm{e}{-6}$ |
+|     $32$ |   $0.000020$ | $5.2\mathrm{e}{-7}$ |  $0.000011$ |           $0.000009$ |
+|     $64$ |   $0.000239$ |          $0.000004$ |  $0.000023$ |           $0.000041$ |
+|    $128$ |   $0.000288$ |          $0.000033$ |  $0.000074$ |           $0.000191$ |
+|    $256$ |   $0.001054$ |          $0.000266$ |  $0.000348$ |           $0.000873$ |
+|    $512$ |   $0.005642$ |          $0.002128$ |  $0.002276$ |           $0.003927$ |
+|  $1,024$ |   $0.032001$ |          $0.017023$ |  $0.013081$ |           $0.017452$ |
+|  $2,048$ |   $0.187117$ |          $0.136189$ |  $0.078109$ |           $0.076788$ |
+|  $4,096$ |   $1.300700$ |          $1.089513$ |  $0.335374$ |           $0.335076$ |
+|  $8,192$ |   $9.434609$ |          $8.716108$ |  $1.500139$ |           $1.451994$ |
+| $16,384$ |  $70.759652$ |         $69.728862$ |  $6.130185$ |           $6.254744$ |
+| $32,768$ | $557.830893$ |        $557.830893$ | $26.806044$ |          $26.806044$ |
+
+Nel confronto fra DCT2 *naive* ($O(N^{3})$) e DCT2 *fast* ($O(N^{2}\log N)$), per visualizzare le pendenze, abbiamo normalizzato le curve teoriche asintotiche moltiplicandole per il tempo effettivo sull’ultima dimensione, cosicché le linee coincidessero in quel punto e l’occhio potesse cogliere subito se le misure coincidessero o divergessero. I tempi degli asintoti riportati in tabella sono infatti quelli già scalati.  
+È subito evidente come l'implementazione *fast* sia sempre migliore di quella *naive*.  
+
+Si può anche notare come per le matrici molto piccole ($N<64$), i tempi non seguono fin da subito il limite asintotico, bensì sono pressappoco equivalenti.  
+Questo è dovuto al fatto che per le matrici più piccole le costanti nascoste prendono il sopravvento.
+
+È interessante anche come l'implementazione *fast* risulti stare sotto la curva normalizzata del suo asintotico teorico per molte matrici.  
+Questo suggerisce che le costanti moltiplicative nascoste del regime più grande siano maggiori di quelle "globali", cosa che potrebbe essere dovuta a overhead di parallelizzazione (SciPy automaticamente determina il numero di thread da usare in base alla dimensione della matrice), costi di setup maggiori, ecc. Matrici più piccole stanno anche più facilmente nella cache della CPU.
+
+In conclusione, le implementazioni sembrano allinearsi bene con i limiti asintotici teorici, e l'implementazione *fast* si conferma migliore della versione *naive*.
 
 ## Esperimenti
 
-TODO  
-Fate qualche esperimento con le immagine proposte sul sito E-learning o con altre a vostra scelta;
-infine commentate i risultati.
+Gli esperimenti riportati sono stati fatti per illustrare gli effetti della compressione JPEG al variare dei parametri $F$, dimensione dei blocchi, e $d$, soglia di cancellazione.
+
+### Compressione con $F=8; d=10$
+
+In questa serie di esperimenti, $F$ e $d$ sono stati lasciati ai loro valori di default, rispettivamente $8$ e $10$.
+
+![T](./assets/80x80_step_1_8_10.bmp)
+![T](./assets/80x80_step_2_8_10.bmp)
+![T](./assets/80x80_step_3_8_10.bmp)
+![T](./assets/80x80_step_4_8_10.bmp)
+
+![T](./assets/prova_step_1_8_10.bmp)
+![T](./assets/prova_step_2_8_10.bmp)
+![T](./assets/prova_step_3_8_10.bmp)
+![T](./assets/prova_step_4_8_10.bmp)
+
+<img alt="" src="./assets/deer_step_1_8_10.bmp" width="48%"/>
+<img alt="" src="./assets/deer_step_2_8_10.bmp" width="48%"/>
+<img alt="" src="./assets/deer_step_3_8_10.bmp" width="48%"/>
+<img alt="" src="./assets/deer_step_4_8_10.bmp" width="48%"/>
+
+<img alt="" src="./assets/Black%20Hole%20Magnetic%20Field_step_1_8_10.bmp" width="48%"/>
+<img alt="" src="./assets/Black%20Hole%20Magnetic%20Field_step_2_8_10.bmp" width="48%"/>
+<img alt="" src="./assets/Black%20Hole%20Magnetic%20Field_step_3_8_10.bmp" width="48%"/>
+<img alt="" src="./assets/Black%20Hole%20Magnetic%20Field_step_4_8_10.bmp" width="48%"/>
+
+### Compressione con $F=32; d=10$
+
+In questo esperimento si mette a confronto un'immagine usata nel primo esperimento con la medesima, ma compressa con una dimensione dei blocchi superiore.  
+Il valore di $F$ è stato quadruplicato rispetto a prima, passando da $8$ a $32$.
+
+deer_step_1_8_10.bmp
+deer_step_2_8_10.bmp
+deer_step_3_8_10.bmp
+deer_step_4_8_10.bmp
+
+deer_step_1_32_10.bmp
+deer_step_2_32_10.bmp
+deer_step_3_32_10.bmp
+deer_step_4_32_10.bmp
+
+### Compressione con $F=32; d=40$
+
+In questo esperimento si mette a confronto un'immagine usata nel primo esperimento con la medesima, ma compressa sia con una dimensione dei blocchi superiore che con una soglia di cancellazione maggiore.  
+Il valore di $F$ è stato quadruplicato, passando da $8$ a $32$, e la stessa proporzione è stata usata per determinare il nuovo valore di $d$, che aumenta da $10$ a $40$.
+
+deer_step_1_8_10.bmp
+deer_step_2_8_10.bmp
+deer_step_3_8_10.bmp
+deer_step_4_8_10.bmp
+
+deer_step_1_32_40.bmp
+deer_step_2_32_40.bmp
+deer_step_3_32_40.bmp
+deer_step_4_32_40.bmp
+
+### Compressioni successive
+
+In questa serie di esperimenti, l'algoritmo di compressione è stato applicato più volte in successione alle stesse immagine, mantenendo per tutte le iterazioni i medesimi valori di $F$ e $d$.
+
+80x80_step_1_8_10.bmp
+80x80_step_2_8_10.bmp
+80x80_step_3_8_10.bmp
+80x80_step_4_8_10.bmp
+
+80x80_step_1_8_10_step_1_8_10.bmp
+80x80_step_2_8_10_step_2_8_10.bmp
+80x80_step_3_8_10_step_3_8_10.bmp
+80x80_step_4_8_10_step_4_8_10.bmp
+
+80x80_step_1_8_10_step_1_8_10_step_1_8_10.bmp
+80x80_step_2_8_10_step_2_8_10_step_2_8_10.bmp
+80x80_step_3_8_10_step_3_8_10_step_3_8_10.bmp
+80x80_step_4_8_10_step_4_8_10_step_4_8_10.bmp
+
+deer_step_1_8_10.bmp
+deer_step_2_8_10.bmp
+deer_step_3_8_10.bmp
+deer_step_4_8_10.bmp
+
+deer_step_1_8_10_step_1_8_10.bmp
+deer_step_2_8_10_step_2_8_10.bmp
+deer_step_3_8_10_step_3_8_10.bmp
+deer_step_4_8_10_step_4_8_10.bmp
+
+deer_step_1_8_10_step_1_8_10_step_1_8_10.bmp
+deer_step_2_8_10_step_2_8_10_step_2_8_10.bmp
+deer_step_3_8_10_step_3_8_10_step_3_8_10.bmp
+deer_step_4_8_10_step_4_8_10_step_4_8_10.bmp
+
+### Immagini fortunate
+
+In questo esperimento è stata selezionata un'immagine particolarmente "fortunata" per illustrare come certe immagini possano essere più o meno sensibili al taglio delle frequenze.
+
+gradient_step_1_8_1.bmp
+gradient_step_2_8_1.bmp
+gradient_step_3_8_1.bmp
+gradient_step_4_8_1.bmp
+
+gradient_step_1_8_3.bmp
+gradient_step_2_8_3.bmp
+gradient_step_3_8_3.bmp
+gradient_step_4_8_3.bmp
+
+### Effetto pixelatura
+
+In questa serie di esperimenti, è stato mantenuta la soglia di cancellazione $d$ fissa a $1$ mentre si aumentava progressivamente il valore di $F$, raddoppiandolo di volta in volta.
+
+Black%20Hole%20Magnetic%20Field_step_1_8_1.bmp
+Black%20Hole%20Magnetic%20Field_step_2_8_1.bmp
+Black%20Hole%20Magnetic%20Field_step_3_8_1.bmp
+Black%20Hole%20Magnetic%20Field_step_4_8_1.bmp
+
+Black%20Hole%20Magnetic%20Field_step_1_16_1.bmp
+Black%20Hole%20Magnetic%20Field_step_2_16_1.bmp
+Black%20Hole%20Magnetic%20Field_step_3_16_1.bmp
+Black%20Hole%20Magnetic%20Field_step_4_16_1.bmp
+
+Black%20Hole%20Magnetic%20Field_step_1_32_1.bmp
+Black%20Hole%20Magnetic%20Field_step_2_32_1.bmp
+Black%20Hole%20Magnetic%20Field_step_3_32_1.bmp
+Black%20Hole%20Magnetic%20Field_step_4_32_1.bmp
+
+Black%20Hole%20Magnetic%20Field_step_1_64_1.bmp
+Black%20Hole%20Magnetic%20Field_step_2_64_1.bmp
+Black%20Hole%20Magnetic%20Field_step_3_64_1.bmp
+Black%20Hole%20Magnetic%20Field_step_4_64_1.bmp
+
+Black%20Hole%20Magnetic%20Field_step_1_128_1.bmp
+Black%20Hole%20Magnetic%20Field_step_2_128_1.bmp
+Black%20Hole%20Magnetic%20Field_step_3_128_1.bmp
+Black%20Hole%20Magnetic%20Field_step_4_128_1.bmp
+
+deer_step_1_8_1.bmp
+deer_step_2_8_1.bmp
+deer_step_3_8_1.bmp
+deer_step_4_8_1.bmp
+
+deer_step_1_16_1.bmp
+deer_step_2_16_1.bmp
+deer_step_3_16_1.bmp
+deer_step_4_16_1.bmp
+
+deer_step_1_32_1.bmp
+deer_step_2_32_1.bmp
+deer_step_3_32_1.bmp
+deer_step_4_32_1.bmp
+
+deer_step_1_64_1.bmp
+deer_step_2_64_1.bmp
+deer_step_3_64_1.bmp
+deer_step_4_64_1.bmp
+
+### Effetto pixelatura con $F$ piccolo
+
+Come nell'esperimento precedente, si è qui tenuto $d=1$.  
+Tuttavia, la grandezza dei blocchi $F$ è stata ridotta a valori molto piccoli, nello specifico $4$ e $2$.
+
+Black%20Hole%20Magnetic%20Field_step_1_4_1.bmp
+Black%20Hole%20Magnetic%20Field_step_2_4_1.bmp
+Black%20Hole%20Magnetic%20Field_step_3_4_1.bmp
+Black%20Hole%20Magnetic%20Field_step_4_4_1.bmp
+
+Black%20Hole%20Magnetic%20Field_step_1_2_1.bmp
+Black%20Hole%20Magnetic%20Field_step_2_2_1.bmp
+Black%20Hole%20Magnetic%20Field_step_3_2_1.bmp
+Black%20Hole%20Magnetic%20Field_step_4_2_1.bmp
 
 ## Sviluppi futuri
 
-TODO
+- Ottimizzare la funzione di benchmark delle implementazioni della DCT in modo da ridurre lo spazio in memoria e permettere confronti per matrici più grandi.
+- Automatizzare il download degli step di compressione JPEG da linea di comando in modo da evitare la ripetizione dell'interazione manuale con l'applicazione. 
+- Aggiungere la matrice di quantizzazione nella compressione JPEG.
