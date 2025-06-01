@@ -21,12 +21,42 @@
 2. [Confronto DCT2 e FastDCT2](#confronto-dct2-e-fastdct2)
 3. [Esperimenti](#esperimenti)
     1. [*F=8; d=10*](#compressione-con-f8-d10)
+        1. [80x80](#80x80)
+        2. [Prova](#prova)
+        3. [Deer](#deer)
+        4. [Black Hole](#black-hole)
+        5. [Commenti](#commenti)
     2. [*F=32; d=10*](#compressione-con-f32-d10)
+        1. [Deer *F=8; d=10*](#deer-f8-d10)
+        2. [Deer *F=32; d=10*](#deer-f32-d10)
+        3. [Commenti](#commenti-1)
     3. [*F=32; d=40*](#compressione-con-f32-d40)
+        1. [Deer *F=8; d=10*](#deer-f8-d10-1)
+        2. [Deer *F=32; d=40*](#deer-f32-d40)
+        3. [Commenti](#commenti-2)
     4. [Compressioni successive](#compressioni-successive)
+        1. [80x80](#80x80-1)
+        2. [Deer](#deer-1)
+        3. [Commenti](#commenti-3)
     5. [Immagini fortunate](#immagini-fortunate)
+        1. [Gradient *F=8; d=1*](#gradient-f8-d1)
+        2. [Gradient *F=8; d=3*](#gradient-f8-d3)
+        3. [Commenti](#commenti-4)
     6. [Effetto pixelatura](#effetto-pixelatura)
+        1. [Black Hole *F=8; d=1*](#black-hole-f8-d1)
+        2. [Black Hole *F=16; d=1*](#black-hole-f16-d1)
+        3. [Black Hole *F=32; d=1*](#black-hole-f32-d1)
+        4. [Black Hole *F=64; d=1*](#black-hole-f64-d1)
+        5. [Black Hole *F=128; d=1*](#black-hole-f128-d1)
+        6. [Deer *F=8; d=1*](#deer-f8-d1)
+        7. [Deer *F=16; d=1*](#deer-f16-d1)
+        8. [Deer *F=32; d=1*](#deer-f32-d1)
+        9. [Deer *F=64; d=1*](#deer-f64-d1)
+        10. [Commenti](#commenti-5)
     7. [Effetto pixelatura con *F* piccolo](#effetto-pixelatura-con-f-piccolo)
+        1. [Black Hole *F=4; d=1*](#black-hole-f4-d1)
+        2. [Gradient *F=2; d=3*](#black-hole-f2-d1)
+        3. [Commenti](#commenti-6)
 4. [Sviluppi futuri](#sviluppi-futuri)
 
 ## Struttura
@@ -339,165 +369,185 @@ In conclusione, le implementazioni sembrano allinearsi bene con i limiti asintot
 
 Gli esperimenti riportati sono stati fatti per illustrare gli effetti della compressione JPEG al variare dei parametri $F$, dimensione dei blocchi, e $d$, soglia di cancellazione.
 
+Le immagini che mostrano gli step di compressione sono sempre in ordine: immagine ritagliata in base alla dimensione dei blocchi (*Step 1*), applicazione della DCT2 (*Step 2*), taglio delle frequenze in base alla soglia di cancellazione (*Step 3*), ricostruzione dell'immagine tramite IDCT2 (*Step 4*).  
+Cliccando su un'immagine verrà aperta l'immagine corrispondente per consentire una visualizzazione più dettagliata.
+
 ### Compressione con $F=8; d=10$
 
 In questa serie di esperimenti, $F$ e $d$ sono stati lasciati ai loro valori di default, rispettivamente $8$ e $10$.
 
-![T](./assets/80x80_step_1_8_10.bmp)
-![T](./assets/80x80_step_2_8_10.bmp)
-![T](./assets/80x80_step_3_8_10.bmp)
-![T](./assets/80x80_step_4_8_10.bmp)
+#### 80x80
 
-![T](./assets/prova_step_1_8_10.bmp)
-![T](./assets/prova_step_2_8_10.bmp)
-![T](./assets/prova_step_3_8_10.bmp)
-![T](./assets/prova_step_4_8_10.bmp)
+[![80x80 Step 1 F=8 d=10](./assets/80x80_step_1_8_10.bmp)](./assets/80x80_step_1_8_10.bmp "80x80 Step 1 F=8 d=10")
+[![80x80 Step 2 F=8 d=10](./assets/80x80_step_2_8_10.bmp)](./assets/80x80_step_2_8_10.bmp "80x80 Step 2 F=8 d=10")
+[![80x80 Step 3 F=8 d=10](./assets/80x80_step_3_8_10.bmp)](./assets/80x80_step_3_8_10.bmp "80x80 Step 3 F=8 d=10")
+[![80x80 Step 4 F=8 d=10](./assets/80x80_step_4_8_10.bmp)](./assets/80x80_step_4_8_10.bmp "80x80 Step 4 F=8 d=10")
 
-<img alt="" src="./assets/deer_step_1_8_10.bmp" width="48%"/> <img alt="" src="./assets/deer_step_2_8_10.bmp" width="48%"/> <img alt="" src="./assets/deer_step_3_8_10.bmp" width="48%"/> <img alt="" src="./assets/deer_step_4_8_10.bmp" width="48%"/>
+#### Prova
 
-<img alt="" src="./assets/Black%20Hole%20Magnetic%20Field_step_1_8_10.bmp" width="48%"/> <img alt="" src="./assets/Black%20Hole%20Magnetic%20Field_step_2_8_10.bmp" width="48%"/> <img alt="" src="./assets/Black%20Hole%20Magnetic%20Field_step_3_8_10.bmp" width="48%"/> <img alt="" src="./assets/Black%20Hole%20Magnetic%20Field_step_4_8_10.bmp" width="48%"/>
+[![Prova Step 1 F=8 d=10](./assets/prova_step_1_8_10.bmp)](./assets/prova_step_1_8_10.bmp "Prova Step 1 F=8 d=10")
+[![Prova Step 2 F=8 d=10](./assets/prova_step_2_8_10.bmp)](./assets/prova_step_2_8_10.bmp "Prova Step 2 F=8 d=10")
+[![Prova Step 3 F=8 d=10](./assets/prova_step_3_8_10.bmp)](./assets/prova_step_3_8_10.bmp "Prova Step 3 F=8 d=10")
+[![Prova Step 4 F=8 d=10](./assets/prova_step_4_8_10.bmp)](./assets/prova_step_4_8_10.bmp "Prova Step 4 F=8 d=10")
+
+#### Deer
+
+<a href="./assets/deer_step_1_8_10.bmp"><img alt="Deer Step 1 F=8 d=10" title="Deer Step 1 F=8 d=10" src="./assets/deer_step_1_8_10.bmp" width="24%"/></a> <a href="./assets/deer_step_2_8_10.bmp"><img alt="Deer Step 2 F=8 d=10" title="Deer Step 2 F=8 d=10" src="./assets/deer_step_2_8_10.bmp" width="24%"/></a> <a href="./assets/deer_step_3_8_10.bmp"><img alt="Deer Step 3 F=8 d=10" title="Deer Step 3 F=8 d=10" src="./assets/deer_step_3_8_10.bmp" width="24%"/></a> <a href="./assets/deer_step_4_8_10.bmp"><img alt="Deer Step 4 F=8 d=10" title="Deer Step 4 F=8 d=10" src="./assets/deer_step_4_8_10.bmp" width="24%"/></a>
+
+#### Black Hole
+
+<a href="./assets/Black%20Hole%20Magnetic%20Field_step_1_8_10.bmp"><img alt="Black Hole Step 1 F=8 d=10" title="Black Hole Step 1 F=8 d=10" src="./assets/Black%20Hole%20Magnetic%20Field_step_1_8_10.bmp" width="24%"/></a> <a href="./assets/Black%20Hole%20Magnetic%20Field_step_2_8_10.bmp"><img alt="Black Hole Step 2 F=8 d=10" title="Black Hole Step 2 F=8 d=10" src="./assets/Black%20Hole%20Magnetic%20Field_step_2_8_10.bmp" width="24%"/></a> <a href="./assets/Black%20Hole%20Magnetic%20Field_step_3_8_10.bmp"><img alt="Black Hole Step 3 F=8 d=10" title="Black Hole Step 3 F=8 d=10" src="./assets/Black%20Hole%20Magnetic%20Field_step_3_8_10.bmp" width="24%"/></a> <a href="./assets/Black%20Hole%20Magnetic%20Field_step_4_8_10.bmp"><img alt="Black Hole Step 4 F=8 d=10" title="Black Hole Step 4 F=8 d=10" src="./assets/Black%20Hole%20Magnetic%20Field_step_4_8_10.bmp" width="24%"/></a>
+
+#### Commenti
+
+In tutte le immagini è visibile un leggero deterioramento della qualità: nelle prime due si formano degli "aloni grigi", nella terza aumenta leggermente la sfocatura, mentre nell'ultima si vengono a formare degli artefatti neri nella regione più luminosa dell'immagine.  
+Questo è dovuto alla soglia di cancellazione relativamente aggressiva che è stata scelta, infatti è visibile come al terzo step, quello del taglio delle frequenze, in tutte le immagini i blocchi vadano a perdere molti pixel luminosi, ovvero frequenze rilevanti.  
+Interessante è la quarta immagine, quella del buco nero, dove non c'è quasi alcuna perdita di qualità, infatti la maggioranza dei blocchi non perde quasi nulla nel taglio delle frequenze, tranne proprio per le zone più luminose dove i blocchi subiscono una perdita rilevante e nella ricostruzione si vengono a formare quegli artefatti neri.
 
 ### Compressione con $F=32; d=10$
 
 In questo esperimento si mette a confronto un'immagine usata nel primo esperimento con la medesima, ma compressa con una dimensione dei blocchi superiore.  
 Il valore di $F$ è stato quadruplicato rispetto a prima, passando da $8$ a $32$.
 
-deer_step_1_8_10.bmp
-deer_step_2_8_10.bmp
-deer_step_3_8_10.bmp
-deer_step_4_8_10.bmp
+#### Deer $F=8; d=10$
 
-deer_step_1_32_10.bmp
-deer_step_2_32_10.bmp
-deer_step_3_32_10.bmp
-deer_step_4_32_10.bmp
+<a href="./assets/deer_step_1_8_10.bmp"><img alt="Deer Step 1 F=8 d=10" title="Deer Step 1 F=8 d=10" src="./assets/deer_step_1_8_10.bmp" width="24%"/></a> <a href="./assets/deer_step_2_8_10.bmp"><img alt="Deer Step 2 F=8 d=10" title="Deer Step 2 F=8 d=10" src="./assets/deer_step_2_8_10.bmp" width="24%"/></a> <a href="./assets/deer_step_3_8_10.bmp"><img alt="Deer Step 3 F=8 d=10" title="Deer Step 3 F=8 d=10" src="./assets/deer_step_3_8_10.bmp" width="24%"/></a> <a href="./assets/deer_step_4_8_10.bmp"><img alt="Deer Step 4 F=8 d=10" title="Deer Step 4 F=8 d=10" src="./assets/deer_step_4_8_10.bmp" width="24%"/></a>
+
+#### Deer $F=32; d=10$
+
+<a href="./assets/deer_step_1_32_10.bmp"><img alt="Deer Step 1 F=32 d=10" title="Deer Step 1 F=32 d=10" src="./assets/deer_step_1_32_10.bmp" width="24%"/></a> <a href="./assets/deer_step_2_32_10.bmp"><img alt="Deer Step 2 F=32 d=10" title="Deer Step 2 F=32 d=10" src="./assets/deer_step_2_32_10.bmp" width="24%"/></a> <a href="./assets/deer_step_3_32_10.bmp"><img alt="Deer Step 3 F=32 d=10" title="Deer Step 3 F=32 d=10" src="./assets/deer_step_3_32_10.bmp" width="24%"/></a> <a href="./assets/deer_step_4_32_10.bmp"><img alt="Deer Step 4 F=32 d=10" title="Deer Step 4 F=32 d=10" src="./assets/deer_step_4_32_10.bmp" width="24%"/></a>
+
+#### Commenti
+
+Come ci si aspettava, la perdita in qualità è decisamente maggiore, così come la formazione di artefatti.  
+Infatti, aumentando la dimensione dei blocchi, ma lasciando il medesimo valore di soglia, si vanno a perdere molte più informazioni per ciascun blocco.
 
 ### Compressione con $F=32; d=40$
 
 In questo esperimento si mette a confronto un'immagine usata nel primo esperimento con la medesima, ma compressa sia con una dimensione dei blocchi superiore che con una soglia di cancellazione maggiore.  
 Il valore di $F$ è stato quadruplicato, passando da $8$ a $32$, e la stessa proporzione è stata usata per determinare il nuovo valore di $d$, che aumenta da $10$ a $40$.
 
-deer_step_1_8_10.bmp
-deer_step_2_8_10.bmp
-deer_step_3_8_10.bmp
-deer_step_4_8_10.bmp
+#### Deer $F=8; d=10$
 
-deer_step_1_32_40.bmp
-deer_step_2_32_40.bmp
-deer_step_3_32_40.bmp
-deer_step_4_32_40.bmp
+<a href="./assets/deer_step_1_8_10.bmp"><img alt="Deer Step 1 F=8 d=10" title="Deer Step 1 F=8 d=10" src="./assets/deer_step_1_8_10.bmp" width="24%"/></a> <a href="./assets/deer_step_2_8_10.bmp"><img alt="Deer Step 2 F=8 d=10" title="Deer Step 2 F=8 d=10" src="./assets/deer_step_2_8_10.bmp" width="24%"/></a> <a href="./assets/deer_step_3_8_10.bmp"><img alt="Deer Step 3 F=8 d=10" title="Deer Step 3 F=8 d=10" src="./assets/deer_step_3_8_10.bmp" width="24%"/></a> <a href="./assets/deer_step_4_8_10.bmp"><img alt="Deer Step 4 F=8 d=10" title="Deer Step 4 F=8 d=10" src="./assets/deer_step_4_8_10.bmp" width="24%"/></a>
+
+#### Deer $F=32; d=40$
+
+<a href="./assets/deer_step_1_32_40.bmp"><img alt="Deer Step 1 F=32 d=40" title="Deer Step 1 F=32 d=40" src="./assets/deer_step_1_32_40.bmp" width="24%"/></a> <a href="./assets/deer_step_2_32_40.bmp"><img alt="Deer Step 2 F=32 d=40" title="Deer Step 2 F=32 d=40" src="./assets/deer_step_2_32_40.bmp" width="24%"/></a> <a href="./assets/deer_step_3_32_40.bmp"><img alt="Deer Step 3 F=32 d=40" title="Deer Step 3 F=32 d=40" src="./assets/deer_step_3_32_40.bmp" width="24%"/></a> <a href="./assets/deer_step_4_32_40.bmp"><img alt="Deer Step 4 F=32 d=40" title="Deer Step 4 F=32 d=40" src="./assets/deer_step_4_32_40.bmp" width="24%"/></a>
+
+#### Commenti
+
+In questo caso le due immagini compresse sono praticamente identiche tra loro. Infatti, aumentando proporzionalmente $F$ e $d$, la quantità di informazioni perse è pressappoco la stessa.
 
 ### Compressioni successive
 
-In questa serie di esperimenti, l'algoritmo di compressione è stato applicato più volte in successione alle stesse immagine, mantenendo per tutte le iterazioni i medesimi valori di $F$ e $d$.
+In questa serie di esperimenti, l'algoritmo di compressione è stato applicato più volte in successione alle stesse immagine, mantenendo per tutte le iterazioni i medesimi valori di $F=8$ e $d=10$.
 
-80x80_step_1_8_10.bmp
-80x80_step_2_8_10.bmp
-80x80_step_3_8_10.bmp
-80x80_step_4_8_10.bmp
+#### 80x80 
 
-80x80_step_1_8_10_step_1_8_10.bmp
-80x80_step_2_8_10_step_2_8_10.bmp
-80x80_step_3_8_10_step_3_8_10.bmp
-80x80_step_4_8_10_step_4_8_10.bmp
+[![80x80 Step 1.1 F=8 d=10](./assets/80x80_step_1_8_10.bmp)](./assets/80x80_step_1_8_10.bmp "80x80 Step 1.1 F=8 d=10")
+[![80x80 Step 1.2 F=8 d=10](./assets/80x80_step_2_8_10.bmp)](./assets/80x80_step_2_8_10.bmp "80x80 Step 1.2 F=8 d=10")
+[![80x80 Step 1.3 F=8 d=10](./assets/80x80_step_3_8_10.bmp)](./assets/80x80_step_3_8_10.bmp "80x80 Step 1.3 F=8 d=10")
+[![80x80 Step 1.4 F=8 d=10](./assets/80x80_step_4_8_10.bmp)](./assets/80x80_step_4_8_10.bmp "80x80 Step 1.4 F=8 d=10")
 
-80x80_step_1_8_10_step_1_8_10_step_1_8_10.bmp
-80x80_step_2_8_10_step_2_8_10_step_2_8_10.bmp
-80x80_step_3_8_10_step_3_8_10_step_3_8_10.bmp
-80x80_step_4_8_10_step_4_8_10_step_4_8_10.bmp
+[![80x80 Step 2.1 F=8 d=10](./assets/80x80_step_4_8_10_step_1_8_10.bmp)](./assets/80x80_step_4_8_10_step_1_8_10.bmp "80x80 Step 2.1 F=8 d=10")
+[![80x80 Step 2.2 F=8 d=10](./assets/80x80_step_4_8_10_step_2_8_10.bmp)](./assets/80x80_step_4_8_10_step_2_8_10.bmp "80x80 Step 2.2 F=8 d=10")
+[![80x80 Step 2.3 F=8 d=10](./assets/80x80_step_4_8_10_step_3_8_10.bmp)](./assets/80x80_step_4_8_10_step_3_8_10.bmp "80x80 Step 2.3 F=8 d=10")
+[![80x80 Step 2.4 F=8 d=10](./assets/80x80_step_4_8_10_step_4_8_10.bmp)](./assets/80x80_step_4_8_10_step_4_8_10.bmp "80x80 Step 2.4 F=8 d=10")
 
-deer_step_1_8_10.bmp
-deer_step_2_8_10.bmp
-deer_step_3_8_10.bmp
-deer_step_4_8_10.bmp
+[![80x80 Step 3.1 F=8 d=10](./assets/80x80_step_4_8_10_step_4_8_10_step_1_8_10.bmp)](./assets/80x80_step_4_8_10_step_4_8_10_step_1_8_10.bmp "80x80 Step 3.1 F=8 d=10")
+[![80x80 Step 3.2 F=8 d=10](./assets/80x80_step_4_8_10_step_4_8_10_step_1_8_10.bmp)](./assets/80x80_step_4_8_10_step_4_8_10_step_1_8_10.bmp "80x80 Step 3.2 F=8 d=10")
+[![80x80 Step 3.3 F=8 d=10](./assets/80x80_step_4_8_10_step_4_8_10_step_1_8_10.bmp)](./assets/80x80_step_4_8_10_step_4_8_10_step_1_8_10.bmp "80x80 Step 3.3 F=8 d=10")
+[![80x80 Step 3.4 F=8 d=10](./assets/80x80_step_4_8_10_step_4_8_10_step_1_8_10.bmp)](./assets/80x80_step_4_8_10_step_4_8_10_step_1_8_10.bmp "80x80 Step 3.4 F=8 d=10")
 
-deer_step_1_8_10_step_1_8_10.bmp
-deer_step_2_8_10_step_2_8_10.bmp
-deer_step_3_8_10_step_3_8_10.bmp
-deer_step_4_8_10_step_4_8_10.bmp
+#### Deer
 
-deer_step_1_8_10_step_1_8_10_step_1_8_10.bmp
-deer_step_2_8_10_step_2_8_10_step_2_8_10.bmp
-deer_step_3_8_10_step_3_8_10_step_3_8_10.bmp
-deer_step_4_8_10_step_4_8_10_step_4_8_10.bmp
+<a href="./assets/deer_step_1_8_10.bmp"><img alt="Deer Step 1.1 F=8 d=10" title="Deer Step 1.1 F=8 d=10" src="./assets/deer_step_1_8_10.bmp" width="24%"/></a> <a href="./assets/deer_step_2_8_10.bmp"><img alt="Deer Step 1.2 F=8 d=10" title="Deer Step 1.2 F=8 d=10" src="./assets/deer_step_2_8_10.bmp" width="24%"/></a> <a href="./assets/deer_step_3_8_10.bmp"><img alt="Deer Step 1.3 F=8 d=10" title="Deer Step 1.3 F=8 d=10" src="./assets/deer_step_3_8_10.bmp" width="24%"/></a> <a href="./assets/deer_step_4_8_10.bmp"><img alt="Deer Step 1.4 F=8 d=10" title="Deer Step 1.4 F=8 d=10" src="./assets/deer_step_4_8_10.bmp" width="24%"/></a>
+
+<a href="./assets/deer_step_4_8_10_step_1_8_10.bmp"><img alt="Deer Step 2.1 F=8 d=10" title="Deer Step 2.1 F=8 d=10" src="./assets/deer_step_4_8_10_step_1_8_10.bmp" width="24%"/></a> <a href="./assets/deer_step_4_8_10_step_2_8_10.bmp"><img alt="Deer Step 2.2 F=8 d=10" title="Deer Step 2.2 F=8 d=10" src="./assets/deer_step_4_8_10_step_2_8_10.bmp" width="24%"/></a> <a href="./assets/deer_step_4_8_10_step_3_8_10.bmp"><img alt="Deer Step 2.3 F=8 d=10" title="Deer Step 2.3 F=8 d=10" src="./assets/deer_step_4_8_10_step_3_8_10.bmp" width="24%"/></a> <a href="./assets/deer_step_4_8_10_step_4_8_10.bmp"><img alt="Deer Step 2.4 F=8 d=10" title="Deer Step 2.4 F=8 d=10" src="./assets/deer_step_4_8_10_step_4_8_10.bmp" width="24%"/></a>
+
+<a href="./assets/deer_step_4_8_10_step_4_8_10_step_1_8_10.bmp"><img alt="Deer Step 3.1 F=8 d=10" title="Deer Step 3.1 F=8 d=10" src="./assets/deer_step_4_8_10_step_4_8_10_step_1_8_10.bmp" width="24%"/></a> <a href="./assets/deer_step_4_8_10_step_4_8_10_step_2_8_10.bmp"><img alt="Deer Step 3.2 F=8 d=10" title="Deer Step 3.2 F=8 d=10" src="./assets/deer_step_4_8_10_step_4_8_10_step_2_8_10.bmp" width="24%"/></a> <a href="./assets/deer_step_4_8_10_step_4_8_10_step_3_8_10.bmp"><img alt="Deer Step 3.3 F=8 d=10" title="Deer Step 3.3 F=8 d=10" src="./assets/deer_step_4_8_10_step_4_8_10_step_3_8_10.bmp" width="24%"/></a> <a href="./assets/deer_step_4_8_10_step_4_8_10_step_4_8_10.bmp"><img alt="Deer Step 3.4 F=8 d=10" title="Deer Step 3.4 F=8 d=10" src="./assets/deer_step_4_8_10_step_4_8_10_step_4_8_10.bmp" width="24%"/></a>
+
+#### Commenti
+
+TODO
 
 ### Immagini fortunate
 
 In questo esperimento è stata selezionata un'immagine particolarmente "fortunata" per illustrare come certe immagini possano essere più o meno sensibili al taglio delle frequenze.
 
-gradient_step_1_8_1.bmp
-gradient_step_2_8_1.bmp
-gradient_step_3_8_1.bmp
-gradient_step_4_8_1.bmp
+#### Gradient $F=8; d=1$
 
-gradient_step_1_8_3.bmp
-gradient_step_2_8_3.bmp
-gradient_step_3_8_3.bmp
-gradient_step_4_8_3.bmp
+<a href="./assets/gradient_step_1_8_1.bmp"><img alt="Gradient Step 1 F=8 d=1" title="Gradient Step 1 F=8 d=1" src="./assets/gradient_step_1_8_1.bmp" width="24%"/></a> <a href="./assets/gradient_step_2_8_1.bmp"><img alt="Gradient Step 2 F=8 d=1" title="Gradient Step 2 F=8 d=1" src="./assets/gradient_step_2_8_1.bmp" width="24%"/></a> <a href="./assets/gradient_step_3_8_1.bmp"><img alt="Gradient Step 3 F=8 d=1" title="Gradient Step 3 F=8 d=1" src="./assets/gradient_step_3_8_1.bmp" width="24%"/></a> <a href="./assets/gradient_step_4_8_1.bmp"><img alt="Gradient Step 4 F=8 d=1" title="Gradient Step 4 F=8 d=1" src="./assets/gradient_step_4_8_1.bmp" width="24%"/></a>
+
+#### Gradient $F=8; d=3$
+
+<a href="./assets/gradient_step_1_8_3.bmp"><img alt="Gradient Step 1 F=8 d=3" title="Gradient Step 1 F=8 d=3" src="./assets/gradient_step_1_8_3.bmp" width="24%"/></a> <a href="./assets/gradient_step_2_8_3.bmp"><img alt="Gradient Step 2 F=8 d=3" title="Gradient Step 2 F=8 d=3" src="./assets/gradient_step_2_8_3.bmp" width="24%"/></a> <a href="./assets/gradient_step_3_8_3.bmp"><img alt="Gradient Step 3 F=8 d=3" title="Gradient Step 3 F=8 d=3" src="./assets/gradient_step_3_8_3.bmp" width="24%"/></a> <a href="./assets/gradient_step_4_8_3.bmp"><img alt="Gradient Step 4 F=8 d=3" title="Gradient Step 4 F=8 d=3" src="./assets/gradient_step_4_8_3.bmp" width="24%"/></a>
+
+#### Commenti
+
+TODO
 
 ### Effetto pixelatura
 
 In questa serie di esperimenti, è stato mantenuta la soglia di cancellazione $d$ fissa a $1$ mentre si aumentava progressivamente il valore di $F$, raddoppiandolo di volta in volta.
 
-Black%20Hole%20Magnetic%20Field_step_1_8_1.bmp
-Black%20Hole%20Magnetic%20Field_step_2_8_1.bmp
-Black%20Hole%20Magnetic%20Field_step_3_8_1.bmp
-Black%20Hole%20Magnetic%20Field_step_4_8_1.bmp
+#### Black Hole $F=8; d=1$
 
-Black%20Hole%20Magnetic%20Field_step_1_16_1.bmp
-Black%20Hole%20Magnetic%20Field_step_2_16_1.bmp
-Black%20Hole%20Magnetic%20Field_step_3_16_1.bmp
-Black%20Hole%20Magnetic%20Field_step_4_16_1.bmp
+<a href="./assets/Black%20Hole%20Magnetic%20Field_step_1_8_1.bmp"><img alt="Black Hole Step 1 F=8 d=1" title="Black Hole Step 1 F=8 d=1" src="./assets/Black%20Hole%20Magnetic%20Field_step_1_8_1.bmp" width="24%"/></a> <a href="./assets/Black%20Hole%20Magnetic%20Field_step_2_8_1.bmp"><img alt="Black Hole Step 2 F=8 d=1" title="Black Hole Step 2 F=8 d=1" src="./assets/Black%20Hole%20Magnetic%20Field_step_2_8_1.bmp" width="24%"/></a> <a href="./assets/Black%20Hole%20Magnetic%20Field_step_3_8_1.bmp"><img alt="Black Hole Step 3 F=8 d=1" title="Black Hole Step 3 F=8 d=1" src="./assets/Black%20Hole%20Magnetic%20Field_step_3_8_1.bmp" width="24%"/></a> <a href="./assets/Black%20Hole%20Magnetic%20Field_step_4_8_1.bmp"><img alt="Black Hole Step 4 F=8 d=1" title="Black Hole Step 4 F=8 d=1" src="./assets/Black%20Hole%20Magnetic%20Field_step_4_8_1.bmp" width="24%"/></a>
 
-Black%20Hole%20Magnetic%20Field_step_1_32_1.bmp
-Black%20Hole%20Magnetic%20Field_step_2_32_1.bmp
-Black%20Hole%20Magnetic%20Field_step_3_32_1.bmp
-Black%20Hole%20Magnetic%20Field_step_4_32_1.bmp
+#### Black Hole $F=16; d=1$
 
-Black%20Hole%20Magnetic%20Field_step_1_64_1.bmp
-Black%20Hole%20Magnetic%20Field_step_2_64_1.bmp
-Black%20Hole%20Magnetic%20Field_step_3_64_1.bmp
-Black%20Hole%20Magnetic%20Field_step_4_64_1.bmp
+<a href="./assets/Black%20Hole%20Magnetic%20Field_step_1_16_1.bmp"><img alt="Black Hole Step 1 F=16 d=1" title="Black Hole Step 1 F=16 d=1" src="./assets/Black%20Hole%20Magnetic%20Field_step_1_16_1.bmp" width="24%"/></a> <a href="./assets/Black%20Hole%20Magnetic%20Field_step_2_16_1.bmp"><img alt="Black Hole Step 2 F=16 d=1" title="Black Hole Step 2 F=16 d=1" src="./assets/Black%20Hole%20Magnetic%20Field_step_2_16_1.bmp" width="24%"/></a> <a href="./assets/Black%20Hole%20Magnetic%20Field_step_3_16_1.bmp"><img alt="Black Hole Step 3 F=16 d=1" title="Black Hole Step 3 F=16 d=1" src="./assets/Black%20Hole%20Magnetic%20Field_step_3_16_1.bmp" width="24%"/></a> <a href="./assets/Black%20Hole%20Magnetic%20Field_step_4_16_1.bmp"><img alt="Black Hole Step 4 F=16 d=1" title="Black Hole Step 4 F=16 d=1" src="./assets/Black%20Hole%20Magnetic%20Field_step_4_16_1.bmp" width="24%"/></a>
 
-Black%20Hole%20Magnetic%20Field_step_1_128_1.bmp
-Black%20Hole%20Magnetic%20Field_step_2_128_1.bmp
-Black%20Hole%20Magnetic%20Field_step_3_128_1.bmp
-Black%20Hole%20Magnetic%20Field_step_4_128_1.bmp
+#### Black Hole $F=32; d=1$
 
-deer_step_1_8_1.bmp
-deer_step_2_8_1.bmp
-deer_step_3_8_1.bmp
-deer_step_4_8_1.bmp
+<a href="./assets/Black%20Hole%20Magnetic%20Field_step_1_32_1.bmp"><img alt="Black Hole Step 1 F=32 d=1" title="Black Hole Step 1 F=32 d=1" src="./assets/Black%20Hole%20Magnetic%20Field_step_1_32_1.bmp" width="24%"/></a> <a href="./assets/Black%20Hole%20Magnetic%20Field_step_2_32_1.bmp"><img alt="Black Hole Step 2 F=32 d=1" title="Black Hole Step 2 F=32 d=1" src="./assets/Black%20Hole%20Magnetic%20Field_step_2_32_1.bmp" width="24%"/></a> <a href="./assets/Black%20Hole%20Magnetic%20Field_step_3_32_1.bmp"><img alt="Black Hole Step 3 F=32 d=1" title="Black Hole Step 3 F=32 d=1" src="./assets/Black%20Hole%20Magnetic%20Field_step_3_32_1.bmp" width="24%"/></a> <a href="./assets/Black%20Hole%20Magnetic%20Field_step_4_32_1.bmp"><img alt="Black Hole Step 4 F=32 d=1" title="Black Hole Step 4 F=32 d=1" src="./assets/Black%20Hole%20Magnetic%20Field_step_4_32_1.bmp" width="24%"/></a>
 
-deer_step_1_16_1.bmp
-deer_step_2_16_1.bmp
-deer_step_3_16_1.bmp
-deer_step_4_16_1.bmp
+#### Black Hole $F=64; d=1$
 
-deer_step_1_32_1.bmp
-deer_step_2_32_1.bmp
-deer_step_3_32_1.bmp
-deer_step_4_32_1.bmp
+<a href="./assets/Black%20Hole%20Magnetic%20Field_step_1_64_1.bmp"><img alt="Black Hole Step 1 F=64 d=1" title="Black Hole Step 1 F=64 d=1" src="./assets/Black%20Hole%20Magnetic%20Field_step_1_64_1.bmp" width="24%"/></a> <a href="./assets/Black%20Hole%20Magnetic%20Field_step_2_64_1.bmp"><img alt="Black Hole Step 2 F=64 d=1" title="Black Hole Step 2 F=64 d=1" src="./assets/Black%20Hole%20Magnetic%20Field_step_2_64_1.bmp" width="24%"/></a> <a href="./assets/Black%20Hole%20Magnetic%20Field_step_3_64_1.bmp"><img alt="Black Hole Step 3 F=64 d=1" title="Black Hole Step 3 F=64 d=1" src="./assets/Black%20Hole%20Magnetic%20Field_step_3_64_1.bmp" width="24%"/></a> <a href="./assets/Black%20Hole%20Magnetic%20Field_step_4_64_1.bmp"><img alt="Black Hole Step 4 F=64 d=1" title="Black Hole Step 4 F=64 d=1" src="./assets/Black%20Hole%20Magnetic%20Field_step_4_64_1.bmp" width="24%"/></a>
 
-deer_step_1_64_1.bmp
-deer_step_2_64_1.bmp
-deer_step_3_64_1.bmp
-deer_step_4_64_1.bmp
+#### Black Hole $F=128; d=1$
+
+<a href="./assets/Black%20Hole%20Magnetic%20Field_step_1_128_1.bmp"><img alt="Black Hole Step 1 F=128 d=1" title="Black Hole Step 1 F=128 d=1" src="./assets/Black%20Hole%20Magnetic%20Field_step_1_128_1.bmp" width="24%"/></a> <a href="./assets/Black%20Hole%20Magnetic%20Field_step_2_128_1.bmp"><img alt="Black Hole Step 2 F=128 d=1" title="Black Hole Step 2 F=128 d=1" src="./assets/Black%20Hole%20Magnetic%20Field_step_2_128_1.bmp" width="24%"/></a> <a href="./assets/Black%20Hole%20Magnetic%20Field_step_3_128_1.bmp"><img alt="Black Hole Step 3 F=128 d=1" title="Black Hole Step 3 F=128 d=1" src="./assets/Black%20Hole%20Magnetic%20Field_step_3_128_1.bmp" width="24%"/></a> <a href="./assets/Black%20Hole%20Magnetic%20Field_step_4_128_1.bmp"><img alt="Black Hole Step 4 F=128 d=1" title="Black Hole Step 4 F=128 d=1" src="./assets/Black%20Hole%20Magnetic%20Field_step_4_128_1.bmp" width="24%"/></a>
+
+#### Deer $F=8; d=1$
+
+<a href="./assets/deer_step_1_8_1.bmp"><img alt="Deer Step 1 F=8 d=1" title="Deer Step 1 F=8 d=1" src="./assets/deer_step_1_8_1.bmp" width="24%"/></a> <a href="./assets/deer_step_2_8_1.bmp"><img alt="Deer Step 2 F=8 d=1" title="Deer Step 2 F=8 d=1" src="./assets/deer_step_2_8_1.bmp" width="24%"/></a> <a href="./assets/deer_step_3_8_1.bmp"><img alt="Deer Step 3 F=8 d=1" title="Deer Step 3 F=8 d=1" src="./assets/deer_step_3_8_1.bmp" width="24%"/></a> <a href="./assets/deer_step_4_8_1.bmp"><img alt="Deer Step 4 F=8 d=1" title="Deer Step 4 F=8 d=1" src="./assets/deer_step_4_8_1.bmp" width="24%"/></a>
+
+#### Deer $F=16; d=1$
+
+<a href="./assets/deer_step_1_16_1.bmp"><img alt="Deer Step 1 F=16 d=1" title="Deer Step 1 F=16 d=1" src="./assets/deer_step_1_16_1.bmp" width="24%"/></a> <a href="./assets/deer_step_2_16_1.bmp"><img alt="Deer Step 2 F=16 d=1" title="Deer Step 2 F=16 d=1" src="./assets/deer_step_2_16_1.bmp" width="24%"/></a> <a href="./assets/deer_step_3_16_1.bmp"><img alt="Deer Step 3 F=16 d=1" title="Deer Step 3 F=16 d=1" src="./assets/deer_step_3_16_1.bmp" width="24%"/></a> <a href="./assets/deer_step_4_16_1.bmp"><img alt="Deer Step 4 F=16 d=1" title="Deer Step 4 F=16 d=1" src="./assets/deer_step_4_16_1.bmp" width="24%"/></a>
+
+#### Deer $F=32; d=1$
+
+<a href="./assets/deer_step_1_32_1.bmp"><img alt="Deer Step 1 F=32 d=1" title="Deer Step 1 F=32 d=1" src="./assets/deer_step_1_32_1.bmp" width="24%"/></a> <a href="./assets/deer_step_2_32_1.bmp"><img alt="Deer Step 2 F=32 d=1" title="Deer Step 2 F=32 d=1" src="./assets/deer_step_2_32_1.bmp" width="24%"/></a> <a href="./assets/deer_step_3_32_1.bmp"><img alt="Deer Step 3 F=32 d=1" title="Deer Step 3 F=32 d=1" src="./assets/deer_step_3_32_1.bmp" width="24%"/></a> <a href="./assets/deer_step_4_32_1.bmp"><img alt="Deer Step 4 F=32 d=1" title="Deer Step 4 F=32 d=1" src="./assets/deer_step_4_32_1.bmp" width="24%"/></a>
+
+#### Deer $F=64; d=1$
+
+<a href="./assets/deer_step_1_64_1.bmp"><img alt="Deer Step 1 F=64 d=1" title="Deer Step 1 F=64 d=1" src="./assets/deer_step_1_64_1.bmp" width="24%"/></a> <a href="./assets/deer_step_2_64_1.bmp"><img alt="Deer Step 2 F=64 d=1" title="Deer Step 2 F=64 d=1" src="./assets/deer_step_2_64_1.bmp" width="24%"/></a> <a href="./assets/deer_step_3_64_1.bmp"><img alt="Deer Step 3 F=64 d=1" title="Deer Step 3 F=64 d=1" src="./assets/deer_step_3_64_1.bmp" width="24%"/></a> <a href="./assets/deer_step_4_64_1.bmp"><img alt="Deer Step 4 F=64 d=1" title="Deer Step 4 F=64 d=1" src="./assets/deer_step_4_64_1.bmp" width="24%"/></a>
+
+#### Commenti
+
+TODO
 
 ### Effetto pixelatura con $F$ piccolo
 
 Come nell'esperimento precedente, si è qui tenuto $d=1$.  
 Tuttavia, la grandezza dei blocchi $F$ è stata ridotta a valori molto piccoli, nello specifico $4$ e $2$.
 
-Black%20Hole%20Magnetic%20Field_step_1_4_1.bmp
-Black%20Hole%20Magnetic%20Field_step_2_4_1.bmp
-Black%20Hole%20Magnetic%20Field_step_3_4_1.bmp
-Black%20Hole%20Magnetic%20Field_step_4_4_1.bmp
+#### Black Hole $F=4; d=1$
 
-Black%20Hole%20Magnetic%20Field_step_1_2_1.bmp
-Black%20Hole%20Magnetic%20Field_step_2_2_1.bmp
-Black%20Hole%20Magnetic%20Field_step_3_2_1.bmp
-Black%20Hole%20Magnetic%20Field_step_4_2_1.bmp
+<a href="./assets/Black%20Hole%20Magnetic%20Field_step_1_4_1.bmp"><img alt="Black Hole Step 1 F=4 d=1" title="Black Hole Step 1 F=4 d=1" src="./assets/Black%20Hole%20Magnetic%20Field_step_1_4_1.bmp" width="24%"/></a> <a href="./assets/Black%20Hole%20Magnetic%20Field_step_2_4_1.bmp"><img alt="Black Hole Step 2 F=4 d=1" title="Black Hole Step 2 F=4 d=1" src="./assets/Black%20Hole%20Magnetic%20Field_step_2_4_1.bmp" width="24%"/></a> <a href="./assets/Black%20Hole%20Magnetic%20Field_step_3_4_1.bmp"><img alt="Black Hole Step 3 F=4 d=1" title="Black Hole Step 3 F=4 d=1" src="./assets/Black%20Hole%20Magnetic%20Field_step_3_4_1.bmp" width="24%"/></a> <a href="./assets/Black%20Hole%20Magnetic%20Field_step_4_4_1.bmp"><img alt="Black Hole Step 4 F=4 d=1" title="Black Hole Step 4 F=4 d=1" src="./assets/Black%20Hole%20Magnetic%20Field_step_4_4_1.bmp" width="24%"/></a>
+
+#### Black Hole $F=2; d=1$
+
+<a href="./assets/Black%20Hole%20Magnetic%20Field_step_1_2_1.bmp"><img alt="Black Hole Step 1 F=2 d=1" title="Black Hole Step 1 F=2 d=1" src="./assets/Black%20Hole%20Magnetic%20Field_step_1_2_1.bmp" width="24%"/></a> <a href="./assets/Black%20Hole%20Magnetic%20Field_step_2_2_1.bmp"><img alt="Black Hole Step 2 F=2 d=1" title="Black Hole Step 2 F=2 d=1" src="./assets/Black%20Hole%20Magnetic%20Field_step_2_2_1.bmp" width="24%"/></a> <a href="./assets/Black%20Hole%20Magnetic%20Field_step_3_2_1.bmp"><img alt="Black Hole Step 3 F=2 d=1" title="Black Hole Step 3 F=2 d=1" src="./assets/Black%20Hole%20Magnetic%20Field_step_3_2_1.bmp" width="24%"/></a> <a href="./assets/Black%20Hole%20Magnetic%20Field_step_4_2_1.bmp"><img alt="Black Hole Step 4 F=2 d=1" title="Black Hole Step 4 F=2 d=1" src="./assets/Black%20Hole%20Magnetic%20Field_step_4_2_1.bmp" width="24%"/></a>
+
+#### Commenti
+
+TODO
 
 ## Sviluppi futuri
 
