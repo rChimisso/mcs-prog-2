@@ -119,12 +119,10 @@ $O(NM(N+M)) = O(N^3) \text{ if } N=M$; with FFT $O(N^2 \log N)$.
 
 - **1D** - recovering samples from DCT coefficients:
 
-  $$
-  x_j=\sum_{k=0}^{N-1}\gamma_k\,c_k\,
-  \cos\!\Bigl(\frac{\pi k\,(2j+1)}{2N}\Bigr),\qquad 
-  \gamma_0=\tfrac12,\;\gamma_{k\ge1}=1.
-  $$
-
+$$
+x_j = \sum_{k=0}^{N-1} \gamma_k \, c_k \, \cos\left(\frac{\pi k (2j+1)}{2N}\right),
+\qquad \gamma_k = \begin{cases} \frac{1}{2}, & k = 0 \\ 1, & k \geq 1 \end{cases}
+$$
 - **2D** - apply the 1D IDCT to columns, then to rows (or vice-versa).
 
 ### JPEG-style Compression (custom F, d)
@@ -148,14 +146,14 @@ We apply the algorithm only to gray-scale images, but it could be used for RGB i
 3. **2D DCT2** - Apply the DCT2 to every block.
 
 4. **Thresholding** - For each block set
-
-   $$
-   \alpha_{ij}=0\qquad\text{if } i+j\ge d_{\text{thr}}.
-   $$
+   
+  $$
+  \alpha_{ij} = 0 \qquad \text{if } i + j \geq d_{\text{thr}}.
+  $$
 
    Low-frequency information (small $i + j$) is preserved; higher frequencies are thrown away, giving compression and suppressing Gibbs artefacts.
 
-5. **Store** the surviving coefficients together with $F$ and $d$ (or simply keep them in memory for the project).
+6. **Store** the surviving coefficients together with $F$ and $d$ (or simply keep them in memory for the project).
 
 #### Decoding algorithm
 
