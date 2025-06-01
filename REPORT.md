@@ -20,13 +20,13 @@
     7. [CI](#ci)
 2. [Confronto DCT2 e FastDCT2](#confronto-dct2-e-fastdct2)
 3. [Esperimenti](#esperimenti)
-    1. [$F=8; d=10$](#compressione-con-f8-d10)
-    2. [$F=32; d=10$](#compressione-con-f32-d10)
-    3. [$F=32; d=40$](#compressione-con-f32-d40)
+    1. [*F=8; d=10*](#compressione-con-f8-d10)
+    2. [*F=32; d=10*](#compressione-con-f32-d10)
+    3. [*F=32; d=40*](#compressione-con-f32-d40)
     4. [Compressioni successive](#compressioni-successive)
     5. [Immagini fortunate](#immagini-fortunate)
     6. [Effetto pixelatura](#effetto-pixelatura)
-    7. [Effetto pixelatura con $F$ piccolo](#effetto-pixelatura-con-f-piccolo)
+    7. [Effetto pixelatura con *F* piccolo](#effetto-pixelatura-con-f-piccolo)
 4. [Sviluppi futuri](#sviluppi-futuri)
 
 ## Struttura
@@ -61,7 +61,7 @@ In totale ci sono 6 step:
 1. Immagine original (*Original image*)
 2. Immagine ritagliata (*Cropped image*)
 3. Visualizzazione dell'applicazione della DCT2 (*|DCT| (log₁₀)*)
-4. Visualizzazione dell'applicazione della maschera (*Mask k+ℓ ≥ {d_thr}*)
+4. Visualizzazione dell'applicazione della maschera (*Mask k+ℓ ≥ d_thr*)
 5. Immagine ricomposta, e quindi compressa (*IDCT (round & clip 0-255)*)
 6. Immagine originale ritagliata e immagine compressa affiancate (*Original vs Compressed images*)
 
