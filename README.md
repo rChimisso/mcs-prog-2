@@ -26,7 +26,7 @@ The suggested IDE is [Visual Studio Code](https://code.visualstudio.com/), and s
 ## Documentation
 
 The source code is fully documented with Docstrings in [reST](https://docutils.sourceforge.io/rst.html).  
-Documentation for the latest release is already live at [rChimisso.github.io/mcs-prog-2](https://rchimisso.github.io/mcs-prog-21/).  
+Documentation for the latest release is already live at [rChimisso.github.io/mcs-prog-2](https://rchimisso.github.io/mcs-prog-2/).  
 
 The structured documentation can be generated with [Sphinx](https://www.sphinx-doc.org/en/master/).  
 To build the documentation yourself, simply run the following command under the `docs/` directory:
@@ -74,7 +74,7 @@ b_{k}= \frac{2}{T}\int_{0}^{T}f(t)\sin\!\Bigl(\tfrac{2\pi k}{T}\,t\Bigr)dt.
 $$
 
 These formulas follow directly from the orthogonality relations
-$\int_{0}^{T}\cos(\tfrac{2\pi k}{T}t)\cos(\tfrac{2\pi \ell}{T}t)dt=\tfrac{T}{2}\delta_{k\ell}$ and analogous ones for sine–cosine and sine–sine pairs.
+$\int_{0}^{T}\cos(\tfrac{2\pi k}{T}t)\cos(\tfrac{2\pi \ell}{T}t)dt=\tfrac{T}{2}\delta_{k\ell}$ and analogous ones for sine-cosine and sine-sine pairs.
 
 ### 1D Discrete Cosine Transform type 2 (DCT2)
 
