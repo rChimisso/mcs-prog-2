@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 - Nothing new.
 
+## [v1.1.0] - 2025/06/01
+
+- Added more documentation.
+- Renamed JPEG compression command from `bmp` to `cmp`.
+- Added a download button in the JPEG compression application window that downloads the images displayed in each step.
+- When exiting the JPEG compression application, now the `app quit` message appears in console.
+
 ## [v1.0.0] - 2025/05/23
 
 - Added DCT2 script to compare naive and SciPy's DCT2 implementations.
@@ -20,4 +27,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 [Unreleased]: https://github.com/rChimisso/mcs-prog-2
 [README]: https://github.com/rChimisso/mcs-prog-2#readme
 
+[v1.1.0]: https://github.com/rChimisso/mcs-prog-2/releases?q=v1.1.0
 [v1.0.0]: https://github.com/rChimisso/mcs-prog-2/releases?q=v1.0.0
