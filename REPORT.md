@@ -88,7 +88,7 @@ Questo modulo contiene l'implementazione della compressione JPEG basata su DCT2 
 Il metodo `jpeg_pipeline_steps` si occupa di creare gli step da visualizzare una volta che l'immagine selezionata deve essere compressa.  
 In totale ci sono 6 step:
 
-1. Immagine original (*Original image*)
+1. Immagine originale (*Original image*)
 2. Immagine ritagliata (*Cropped image*)
 3. Visualizzazione dell'applicazione della DCT2 (*|DCT| (log₁₀)*)
 4. Visualizzazione dell'applicazione della maschera (*Mask k+ℓ ≥ d_thr*)
@@ -101,6 +101,8 @@ La scala logaritmica prima della normalizzazione lineare è stata impiegata per 
 |--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------|
 | Ciascun pixel viene mappato tra 0 e 255 linearmente, quindi valori grandi dominano la scala.                                                                                               | I valori grandi sono "schiacciati" più di quelli piccoli. Piccole differenze diventano visibili.                                     |
 | Gli occhi umani rispondono all'incirca logaritmicamente all'intensità luminosa, quindi valori in scala lineare non rispecchiano la percezione di valori a intervalli uguali in luminosità. | Dopo una trasformazione logaritmica, valori numerici uguali corrispondono maggiormente ai intervalli di luminosità percepiti uguali. |
+
+Gli step da 2 a 5 possono essere scaricati per salvare i risultati e poterli visualizzare successivamente senza necessità di rieseguire il programma.
 
 La classe `DCT2App` sfrutta la libreria TKinter per creare una finestra che permetta all'utente di selezionare un'immagine in scala di grigi, comprimerla, e visualizzare gli step precedentemente citati.
 
@@ -470,7 +472,8 @@ In questa serie di esperimenti, l'algoritmo di compressione è stato applicato p
 
 #### Commenti
 
-TODO
+Al contrario dell'immaginario collettivo, applicare più volte questo algoritmo di compressione non va a deteriorare ulteriormente l'immagine.  
+Questo è dovuto al fatto che una volta che viene effettuato il primo taglio delle frequenze, i tagli successivi non hanno quasi nulla da tagliare, se non piccolissimi valori che ritornano a causa del *round & clip* che viene effettuato dopo la ricostruzione tramite IDCT2, e quindi l'immagine si stabilizza in fretta.
 
 ### Immagini fortunate
 
@@ -486,7 +489,7 @@ In questo esperimento è stata selezionata un'immagine particolarmente "fortunat
 
 #### Commenti
 
-TODO
+Come è evidente, in base a come si distribuisce il segnale nell'immagine, applicare l'algoritmo non comporta quasi nessuna perdita di qualità, nemmeno con valori di $d$ molto aggressivi. In questo senso l'immagine è "fortunata".
 
 ### Effetto pixelatura
 
@@ -530,7 +533,8 @@ In questa serie di esperimenti, è stato mantenuta la soglia di cancellazione $d
 
 #### Commenti
 
-TODO
+Come era ovvio in partenza, mantenendo il valore più basso possibile per $d$ e raddoppiando di volta in volta il valore di $F$, si perde sempre più qualità.  
+La nota interessante è però il fatto che questo algoritmo di compressione JPEG semplificato trovi applicazione come filtro per pixelare a piacere un'immagine.
 
 ### Effetto pixelatura con $F$ piccolo
 
@@ -547,10 +551,15 @@ Tuttavia, la grandezza dei blocchi $F$ è stata ridotta a valori molto piccoli, 
 
 #### Commenti
 
-TODO
+Andando nella direzione opposta rispetto a quanto visto nell'esperimento precedente, ovvero andando a diminuire progressivamente il valore di $F$, si nota come l'effetto pixelatura sembra scomparire.  
+Questo è ovvio, infatti diminuendo la dimensione dei blocchi, il valore di $d$ diventa in proporzione meno aggressivo e si vanno a tagliare sempre meno informazioni.  
+È anche possibile vedere il fenomeno come l'effetto pixelatura che viene applicato a grandezze sempre più vicine ai pixel reali, e che quindi ci si avvicina sempre di più all'immagine originale.
 
 ## Sviluppi futuri
 
 - Ottimizzare la funzione di benchmark delle implementazioni della DCT in modo da ridurre lo spazio in memoria e permettere confronti per matrici più grandi.
 - Automatizzare il download degli step di compressione JPEG da linea di comando in modo da evitare la ripetizione dell'interazione manuale con l'applicazione. 
 - Aggiungere la matrice di quantizzazione nella compressione JPEG.
+- Permettere di comprimere immagini RGB, eventualmente permettendo diversi parametri per ciascuno dei 3 canali.
+- Implementare il salvataggio ottimizzato delle immagini compresse, ad esempio tramite run-length encoding e codifica di Huffman.  
+  Questo renderebbe possibile anche uno studio sul risparmio in termini di spazio occupato dell'immagine compressa contro l'immagine originale.
