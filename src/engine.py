@@ -34,7 +34,7 @@ class Engine:
   Program engine.
   """
 
-  VERSION: Final[str] = "1.0.0"
+  VERSION: Final[str] = "1.1.0"
   """
   Engine version.
   """
