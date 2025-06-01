@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 - Nothing new.
 
-## [v1.1.0] - 2025/06/01
+## [v1.1.0] - 2025/06/02
 
 - Added more documentation.
 - Renamed JPEG compression command from `bmp` to `cmp`.
