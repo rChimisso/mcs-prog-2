@@ -90,7 +90,7 @@ Projecting *x* onto this basis gives the DCT coefficients
 
 $$
 c_k=\begin{cases}
-\displaystyle\frac1N\sum_{i=0}^{N-1}x_i\,w_k(i), & k=0\\[12pt]
+\displaystyle\frac1N\sum_{i=0}^{N-1}x_i\,w_k(i), & k=0\\
 \displaystyle\frac{2}{N}\sum_{i=0}^{N-1}x_i\,w_k(i), & k\ge 1
 \end{cases}
 $$
