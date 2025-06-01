@@ -20,13 +20,13 @@
     7. [CI](#ci)
 2. [Confronto DCT2 e FastDCT2](#confronto-dct2-e-fastdct2)
 3. [Esperimenti](#esperimenti)
-    1. [$F=8; d=10$](#compressione-con)
-    2. [$F=32; d=10$](#compressione-con-1)
-    3. [$F=32; d=40$](#compressione-con-2)
+    1. [$F=8; d=10$](#compressione-con-f8-d10)
+    2. [$F=32; d=10$](#compressione-con-f32-d10)
+    3. [$F=32; d=40$](#compressione-con-f32-d40)
     4. [Compressioni successive](#compressioni-successive)
     5. [Immagini fortunate](#immagini-fortunate)
     6. [Effetto pixelatura](#effetto-pixelatura)
-    7. [Effetto pixelatura con $F$ piccolo](#effetto-pixelatura-con--piccolo)
+    7. [Effetto pixelatura con $F$ piccolo](#effetto-pixelatura-con-f-piccolo)
 4. [Sviluppi futuri](#sviluppi-futuri)
 
 ## Struttura
@@ -353,15 +353,9 @@ In questa serie di esperimenti, $F$ e $d$ sono stati lasciati ai loro valori di 
 ![T](./assets/prova_step_3_8_10.bmp)
 ![T](./assets/prova_step_4_8_10.bmp)
 
-<img alt="" src="./assets/deer_step_1_8_10.bmp" width="48%"/>
-<img alt="" src="./assets/deer_step_2_8_10.bmp" width="48%"/>
-<img alt="" src="./assets/deer_step_3_8_10.bmp" width="48%"/>
-<img alt="" src="./assets/deer_step_4_8_10.bmp" width="48%"/>
+<img alt="" src="./assets/deer_step_1_8_10.bmp" width="48%"/> <img alt="" src="./assets/deer_step_2_8_10.bmp" width="48%"/> <img alt="" src="./assets/deer_step_3_8_10.bmp" width="48%"/> <img alt="" src="./assets/deer_step_4_8_10.bmp" width="48%"/>
 
-<img alt="" src="./assets/Black%20Hole%20Magnetic%20Field_step_1_8_10.bmp" width="48%"/>
-<img alt="" src="./assets/Black%20Hole%20Magnetic%20Field_step_2_8_10.bmp" width="48%"/>
-<img alt="" src="./assets/Black%20Hole%20Magnetic%20Field_step_3_8_10.bmp" width="48%"/>
-<img alt="" src="./assets/Black%20Hole%20Magnetic%20Field_step_4_8_10.bmp" width="48%"/>
+<img alt="" src="./assets/Black%20Hole%20Magnetic%20Field_step_1_8_10.bmp" width="48%"/> <img alt="" src="./assets/Black%20Hole%20Magnetic%20Field_step_2_8_10.bmp" width="48%"/> <img alt="" src="./assets/Black%20Hole%20Magnetic%20Field_step_3_8_10.bmp" width="48%"/> <img alt="" src="./assets/Black%20Hole%20Magnetic%20Field_step_4_8_10.bmp" width="48%"/>
 
 ### Compressione con $F=32; d=10$
 
