@@ -55,7 +55,7 @@
         10. [Commenti](#commenti-5)
     7. [Effetto pixelatura con *F* piccolo](#effetto-pixelatura-con-f-piccolo)
         1. [Black Hole *F=4; d=1*](#black-hole-f4-d1)
-        2. [Gradient *F=2; d=3*](#black-hole-f2-d1)
+        2. [Black Hole *F=2; d=3*](#black-hole-f2-d1)
         3. [Commenti](#commenti-6)
 4. [Sviluppi futuri](#sviluppi-futuri)
 
