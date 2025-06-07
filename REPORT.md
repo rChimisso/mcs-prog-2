@@ -356,7 +356,7 @@ I risultati del benchmark sono i seguenti:
 | $16,384$ |  $70.759652$ |         $69.728862$ |  $6.130185$ |           $6.254744$ |
 | $32,768$ | $557.830893$ |        $557.830893$ | $26.806044$ |          $26.806044$ |
 
-Nel confronto fra DCT2 *naive* ($O(N^{3})$) e DCT2 *fast* ($O(N^{2}\log N)$), per visualizzare le pendenze, abbiamo normalizzato le curve teoriche asintotiche moltiplicandole per il tempo effettivo sull’ultima dimensione, cosicché le linee coincidessero in quel punto e l’occhio potesse cogliere subito se le misure coincidessero o divergessero. I tempi degli asintoti riportati in tabella sono infatti quelli già scalati.  
+Nel confronto fra DCT2 *naive* ( $O(N^{3})$ ) e DCT2 *fast* ( $O(N^{2}\log N)$ ), per visualizzare le pendenze, abbiamo normalizzato le curve teoriche asintotiche moltiplicandole per il tempo effettivo sull’ultima dimensione, cosicché le linee coincidessero in quel punto e l’occhio potesse cogliere subito se le misure coincidessero o divergessero. I tempi degli asintoti riportati in tabella sono infatti quelli già scalati.  
 È subito evidente come l'implementazione *fast* sia sempre migliore di quella *naive*.  
 
 Si può anche notare come per le matrici molto piccole ($N<64$), i tempi non seguono fin da subito il limite asintotico, bensì sono pressappoco equivalenti.  
