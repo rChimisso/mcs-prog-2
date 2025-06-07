@@ -62,15 +62,15 @@ Technical background notions behind the algorithms used in this project.
 The Fourier transform rests on the idea that any $\text{T-periodic}$ signal $f(t)$ can be rebuilt from harmonically related sines and cosines
 
 $$
-f(t)=a_{0}+\sum_{k=1}^{\infty}\Bigl[a_{k}\cos\!\Bigl(\tfrac{2\pi k}{T}\,t\Bigr)+b_{k}\sin\!\Bigl(\tfrac{2\pi k}{T}\,t\Bigr)\Bigr].
+f(t)=a_{0}+\sum_{k=1}^{\infty}\Bigl[a_{k}\cos\Bigl(\tfrac{2\pi k}{T}t\Bigr)+b_{k}\sin\Bigl(\tfrac{2\pi k}{T}t\Bigr)\Bigr].
 $$
 
 Orthogonality of the trigonometric basis over one period makes the coefficients easy to compute:
 
 $$
-a_{0}= \frac1T\int_{0}^{T}f(t)\,dt,\qquad
-a_{k}= \frac{2}{T}\int_{0}^{T}f(t)\cos\!\Bigl(\tfrac{2\pi k}{T}\,t\Bigr)dt,\qquad
-b_{k}= \frac{2}{T}\int_{0}^{T}f(t)\sin\!\Bigl(\tfrac{2\pi k}{T}\,t\Bigr)dt.
+a_{0}= \frac1T\int_{0}^{T}f(t)dt,\qquad
+a_{k}= \frac{2}{T}\int_{0}^{T}f(t)\cos\Bigl(\tfrac{2\pi k}{T}t\Bigr)dt,\qquad
+b_{k}= \frac{2}{T}\int_{0}^{T}f(t)\sin\Bigl(\tfrac{2\pi k}{T}t\Bigr)dt.
 $$
 
 These formulas follow directly from the orthogonality relations
@@ -81,8 +81,8 @@ $\int_{0}^{T}\cos(\tfrac{2\pi k}{T}t)\cos(\tfrac{2\pi \ell}{T}t)dt=\tfrac{T}{2}\
 In the discrete world a length-*N* signal is seen as a vector $x=(x_0,\dots,x_{N-1})$. The cosine basis vectors
 
 $$
-w_k(i)=\cos\!\Bigl(\frac{\pi k\,(2i+1)}{2N}\Bigr),\qquad
-k=0,\dots,N-1,\; i=0,\dots,N-1
+w_k(i)=\cos\Bigl(\frac{\pi k(2i+1)}{2N}\Bigr),\qquad
+k=0,\dots,N-1\; i=0,\dots,N-1
 $$
 
 form an orthogonal basis of $\mathbb R^{N}$.  
@@ -90,8 +90,8 @@ Projecting *x* onto this basis gives the DCT coefficients
 
 $$
 c_k=\begin{cases}
-\displaystyle\frac1N\sum_{i=0}^{N-1}x_i\,w_k(i), & k=0\\
-\displaystyle\frac{2}{N}\sum_{i=0}^{N-1}x_i\,w_k(i), & k\ge 1
+\displaystyle\frac1N\sum_{i=0}^{N-1}x_iw_k(i) & k=0\\
+\displaystyle\frac{2}{N}\sum_{i=0}^{N-1}x_iw_k(i) & k\ge 1
 \end{cases}
 $$
 
@@ -107,9 +107,9 @@ For an $N\times M$ block $A=[a_{ij}]$ the 2-D DCT is separable:
 $$
 \alpha_{sr}= \frac{2}{N}\frac{2}{M}
 \sum_{i=0}^{N-1}\sum_{j=0}^{M-1}
-a_{ij}\,
-\cos\!\Bigl(\frac{\pi(2i+1)s}{2N}\Bigr)
-\cos\!\Bigl(\frac{\pi(2j+1)r}{2M}\Bigr).
+a_{ij}
+\cos\Bigl(\frac{\pi(2i+1)s}{2N}\Bigr)
+\cos\Bigl(\frac{\pi(2j+1)r}{2M}\Bigr).
 $$
 
 Computationally this is just "DCT rows, then DCT columns" and costs $O(NM(N+M))$ without fast algorithms.  
@@ -120,7 +120,7 @@ $O(NM(N+M)) = O(N^3) \text{ if } N=M$; with FFT $O(N^2 \log N)$.
 - **1D** - recovering samples from DCT coefficients:
 
 $$
-x_j = \sum_{k=0}^{N-1} \gamma_k \, c_k \, \cos\left(\frac{\pi k (2j+1)}{2N}\right),
+x_j = \sum_{k=0}^{N-1} \gamma_k  c_k \cos\left(\frac{\pi k (2j+1)}{2N}\right),
 \qquad \gamma_k = \begin{cases} \frac{1}{2}, & k = 0 \\ 1, & k \geq 1 \end{cases}
 $$
 - **2D** - apply the 1D IDCT to columns, then to rows (or vice-versa).
@@ -145,12 +145,7 @@ We apply the algorithm only to gray-scale images, but it could be used for RGB i
 
 3. **2D DCT2** - Apply the DCT2 to every block.
 
-4. **Thresholding** - For each block set
-   
-  $$
-  \alpha_{ij} = 0 \qquad \text{if } i + j \geq d_{\text{thr}}.
-  $$
-
+4. **Thresholding** - For each block set $\alpha_{ij} = 0 \qquad \text{if } i + j \geq d_{\text{thr}}$.  
    Low-frequency information (small $i + j$) is preserved; higher frequencies are thrown away, giving compression and suppressing Gibbs artefacts.
 
 6. **Store** the surviving coefficients together with $F$ and $d$ (or simply keep them in memory for the project).
